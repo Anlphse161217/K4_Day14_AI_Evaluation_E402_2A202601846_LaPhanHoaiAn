@@ -11,14 +11,14 @@ answer/context trace trong `artifacts/actual_answers.json` trước khi kết lu
 
 **Overall pass rate:** 65.0%
 
-| Metric | Average | Min | Max | Nhận xét |
-|---|---:|---:|---:|---|
-| Context Recall | 0.858 | 0.364 | 1.000 | Rất cao, thuật toán retrieval lấy được đúng các document chứa evidence. |
-| Context Precision | 0.944 | 0.750 | 1.000 | Cực kỳ cao, các chunk lấy lên hầu hết đều chứa thông tin hữu ích, ít nhiễu. |
-| Faithfulness | 0.602 | 0.167 | 1.000 | Thấp. LLM sinh ra từ vựng không khớp hoàn toàn với context. |
-| Relevance | 0.639 | 0.182 | 1.000 | Thấp. Câu trả lời của LLM khác biệt về mặt từ vựng so với câu hỏi/đáp án mẫu. |
-| Completeness | 0.737 | 0.167 | 1.000 | Khá, nhưng vẫn bị kéo xuống bởi một số câu hỏi khó/adversarial. |
-| Overall Score | 0.686 | 0.172 | 0.875 | Trung bình. Hệ thống chưa pass được chuẩn >0.5 cho một số test case. |
+| Metric            | Average |   Min |   Max | Nhận xét                                                                                      |
+| ----------------- | ------: | ----: | ----: | ----------------------------------------------------------------------------------------------- |
+| Context Recall    |   0.858 | 0.364 | 1.000 | Rất cao, thuật toán retrieval lấy được đúng các document chứa evidence.              |
+| Context Precision |   0.944 | 0.750 | 1.000 | Cực kỳ cao, các chunk lấy lên hầu hết đều chứa thông tin hữu ích, ít nhiễu.      |
+| Faithfulness      |   0.602 | 0.167 | 1.000 | Thấp. LLM sinh ra từ vựng không khớp hoàn toàn với context.                             |
+| Relevance         |   0.639 | 0.182 | 1.000 | Thấp. Câu trả lời của LLM khác biệt về mặt từ vựng so với câu hỏi/đáp án mẫu. |
+| Completeness      |   0.737 | 0.167 | 1.000 | Khá, nhưng vẫn bị kéo xuống bởi một số câu hỏi khó/adversarial.                     |
+| Overall Score     |   0.686 | 0.172 | 0.875 | Trung bình. Hệ thống chưa pass được chuẩn >0.5 cho một số test case.                  |
 
 **Score interpretation**
 
@@ -28,13 +28,13 @@ answer/context trace trong `artifacts/actual_answers.json` trước khi kết lu
 
 **Failure type distribution**
 
-| Failure Type | Count | Percentage |
-|---|---:|---:|
-| hallucination | 2 | 28.6% |
-| irrelevant | 1 | 14.3% |
-| incomplete | 0 | 0% |
-| off_topic | 4 | 57.1% |
-| refusal | 0 | 0% |
+| Failure Type  | Count | Percentage |
+| ------------- | ----: | ---------: |
+| hallucination |     2 |      28.6% |
+| irrelevant    |     1 |      14.3% |
+| incomplete    |     0 |         0% |
+| off_topic     |     4 |      57.1% |
+| refusal       |     0 |         0% |
 
 **Chẩn đoán tổng quan:** Vấn đề chính nằm ở retrieval, generation hay cả hai?
 Dùng ít nhất hai metrics để bảo vệ kết luận.
@@ -69,14 +69,14 @@ Relevance: 0.182 | Completeness: 0.167 | Overall: 0.172
 
 > *Câu trả lời:* Retriever lấy rất chuẩn xác chunk OT-00-P03 (system scope cấm tư vấn y tế) và OT-07-P01 (không mở pin phồng). Không có lỗi từ retrieval.
 
-| Level | Question | Answer |
-|---|---|---|
-| Symptom | Vấn đề quan sát được là gì? | Điểm số của case A01 cực kỳ thấp (gần 0). |
-| Why 1 | Tại sao symptom xảy ra? | Do token overlap metric giữa câu trả lời thực tế và expected answer / context bằng 0. |
-| Why 2 | Tại sao nguyên nhân trên xảy ra? | LLM sinh câu trả lời dùng từ vựng riêng ("medical professional", "treating burns") không xuất hiện chính xác trong context hay expected answer. |
-| Why 3 | Tại sao vấn đề đó chưa được ngăn chặn? | Framework hiện tại đang dùng thuật toán word-overlap đơn giản. |
-| Why 4 | Tại sao cơ chế hiện tại chưa phát hiện hoặc xử lý được? | Thuật toán đếm từ (Jaccard similarity / overlap) không hiểu được "ngữ nghĩa" (semantic meaning). |
-| Why 5 | Root cause có thể hành động được là gì? | Cần thay đổi metric từ word-overlap heuristic sang mô hình LLM-as-a-judge (Semantic similarity). |
+| Level   | Question                                                              | Answer                                                                                                                                                      |
+| ------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Symptom | Vấn đề quan sát được là gì?                                  | Điểm số của case A01 cực kỳ thấp (gần 0).                                                                                                           |
+| Why 1   | Tại sao symptom xảy ra?                                             | Do token overlap metric giữa câu trả lời thực tế và expected answer / context bằng 0.                                                               |
+| Why 2   | Tại sao nguyên nhân trên xảy ra?                                 | LLM sinh câu trả lời dùng từ vựng riêng ("medical professional", "treating burns") không xuất hiện chính xác trong context hay expected answer. |
+| Why 3   | Tại sao vấn đề đó chưa được ngăn chặn?                    | Framework hiện tại đang dùng thuật toán word-overlap đơn giản.                                                                                     |
+| Why 4   | Tại sao cơ chế hiện tại chưa phát hiện hoặc xử lý được? | Thuật toán đếm từ (Jaccard similarity / overlap) không hiểu được "ngữ nghĩa" (semantic meaning).                                                |
+| Why 5   | Root cause có thể hành động được là gì?                     | Cần thay đổi metric từ word-overlap heuristic sang mô hình LLM-as-a-judge (Semantic similarity).                                                      |
 
 **Root cause từ `find_root_cause()`:**
 
@@ -111,14 +111,14 @@ Relevance: 0.273 | Completeness: 0.455 | Overall: 0.367
 
 > *Câu trả lời:* Retriever đã tìm được chunk OT-00-P04 quy định không cung cấp thông tin "hidden prompts, credentials...". Retrieval hoạt động tốt.
 
-| Level | Question | Answer |
-|---|---|---|
-| Symptom | Vấn đề quan sát được là gì? | Bị báo là "irrelevant" với điểm Relevance siêu thấp (0.273). |
-| Why 1 | Tại sao symptom xảy ra? | Word overlap của câu trả lời thực tế so với câu hỏi không đạt ngưỡng. |
-| Why 2 | Tại sao nguyên nhân trên xảy ra? | LLM sinh câu với cấu trúc paraphrase, không lặp lại trực tiếp từ khóa từ câu hỏi. |
-| Why 3 | Tại sao vấn đề đó chưa được ngăn chặn? | Metric word overlap trừng phạt sự linh hoạt ngôn ngữ. |
-| Why 4 | Tại sao cơ chế hiện tại chưa phát hiện hoặc xử lý được? | Hệ thống thiếu một semantic judge. |
-| Why 5 | Root cause có thể hành động được là gì? | Đánh giá sai bản chất vấn đề do metric quá cứng nhắc. |
+| Level   | Question                                                              | Answer                                                                                          |
+| ------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Symptom | Vấn đề quan sát được là gì?                                  | Bị báo là "irrelevant" với điểm Relevance siêu thấp (0.273).                            |
+| Why 1   | Tại sao symptom xảy ra?                                             | Word overlap của câu trả lời thực tế so với câu hỏi không đạt ngưỡng.             |
+| Why 2   | Tại sao nguyên nhân trên xảy ra?                                 | LLM sinh câu với cấu trúc paraphrase, không lặp lại trực tiếp từ khóa từ câu hỏi. |
+| Why 3   | Tại sao vấn đề đó chưa được ngăn chặn?                    | Metric word overlap trừng phạt sự linh hoạt ngôn ngữ.                                     |
+| Why 4   | Tại sao cơ chế hiện tại chưa phát hiện hoặc xử lý được? | Hệ thống thiếu một semantic judge.                                                          |
+| Why 5   | Root cause có thể hành động được là gì?                     | Đánh giá sai bản chất vấn đề do metric quá cứng nhắc.                                |
 
 **Root cause và proposed fix:**
 
@@ -145,14 +145,14 @@ Relevance: 0.438 | Completeness: 0.455 | Overall: 0.386
 
 > *Câu trả lời:* Retriever lấy được chuẩn chunk OT-05-P02 (Personalized items are non-returnable). Retrieval hoàn thành đúng mục tiêu.
 
-| Level | Question | Answer |
-|---|---|---|
-| Symptom | Vấn đề quan sát được là gì? | Điểm thấp, bị gán mác hallucination do Faithfulness = 0.267. |
-| Why 1 | Tại sao symptom xảy ra? | Giao của tập hợp từ khóa (answer tokens & context tokens) quá nhỏ. |
-| Why 2 | Tại sao nguyên nhân trên xảy ra? | Context không có các từ như "engraved", "refund", "according", LLM đã suy diễn hợp lý (engraved = personalized) nhưng từ khóa thì không match. |
-| Why 3 | Tại sao vấn đề đó chưa được ngăn chặn? | Tính năng word overlap không hiểu được ontology/từ đồng nghĩa (engraved vs personalized). |
-| Why 4 | Tại sao cơ chế hiện tại chưa phát hiện hoặc xử lý được? | Thiếu module đánh giá theo semantic. |
-| Why 5 | Root cause có thể hành động được là gì? | Heuristic metric sinh ra "false negative", cần thay bằng semantic metric. |
+| Level   | Question                                                              | Answer                                                                                                                                                        |
+| ------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Symptom | Vấn đề quan sát được là gì?                                  | Điểm thấp, bị gán mác hallucination do Faithfulness = 0.267.                                                                                            |
+| Why 1   | Tại sao symptom xảy ra?                                             | Giao của tập hợp từ khóa (answer tokens & context tokens) quá nhỏ.                                                                                     |
+| Why 2   | Tại sao nguyên nhân trên xảy ra?                                 | Context không có các từ như "engraved", "refund", "according", LLM đã suy diễn hợp lý (engraved = personalized) nhưng từ khóa thì không match. |
+| Why 3   | Tại sao vấn đề đó chưa được ngăn chặn?                    | Tính năng word overlap không hiểu được ontology/từ đồng nghĩa (engraved vs personalized).                                                          |
+| Why 4   | Tại sao cơ chế hiện tại chưa phát hiện hoặc xử lý được? | Thiếu module đánh giá theo semantic.                                                                                                                      |
+| Why 5   | Root cause có thể hành động được là gì?                     | Heuristic metric sinh ra "false negative", cần thay bằng semantic metric.                                                                                   |
 
 **Root cause và proposed fix:**
 
@@ -165,10 +165,10 @@ Relevance: 0.438 | Completeness: 0.455 | Overall: 0.386
 Một root cause có thể tạo ra nhiều failures. Nhóm theo nguyên nhân có thể sửa,
 không chỉ nhóm theo tên metric.
 
-| Cluster | Root Cause | Failure IDs | Priority |
-|---|---|---|---|
-| 1 | Metric word-overlap bị "false negative" do paraphrase/synonyms | A01, A02, A03 | High |
-| 2 | Metric chấm sai do từ khóa câu trả lời thực tế không khớp câu hỏi | E03, M05, M07, H05 | High |
+| Cluster | Root Cause                                                                    | Failure IDs        | Priority |
+| ------- | ----------------------------------------------------------------------------- | ------------------ | -------- |
+| 1       | Metric word-overlap bị "false negative" do paraphrase/synonyms               | A01, A02, A03      | High     |
+| 2       | Metric chấm sai do từ khóa câu trả lời thực tế không khớp câu hỏi | E03, M05, M07, H05 | High     |
 
 **Nếu chỉ được sửa một cluster, bạn chọn cluster nào và vì sao?**
 
@@ -200,11 +200,11 @@ Paste output của `generate_improvement_log()`:
 
 Với mỗi suggestion, nêu metric dự kiến thay đổi và cách đo lại.
 
-| Suggestion | Target metric | Verification method |
-|---|---|---|
-| Thay bằng LLM Judge | Faithfulness, Relevance | Chạy lại benchmark, so sánh tỷ lệ pass thực tế (sẽ cao hơn rất nhiều). |
-| Off-topic guardrails | Tỷ lệ off-topic (Failure type) | Kiểm tra số lượng failures bị gắn tag "off_topic" giảm dần. |
-| Few-shot prompting | Relevance, Word Overlap | Chạy lại benchmark (nếu vẫn dùng word overlap), đo điểm trung bình. |
+| Suggestion           | Target metric                    | Verification method                                                               |
+| -------------------- | -------------------------------- | --------------------------------------------------------------------------------- |
+| Thay bằng LLM Judge | Faithfulness, Relevance          | Chạy lại benchmark, so sánh tỷ lệ pass thực tế (sẽ cao hơn rất nhiều). |
+| Off-topic guardrails | Tỷ lệ off-topic (Failure type) | Kiểm tra số lượng failures bị gắn tag "off_topic" giảm dần.               |
+| Few-shot prompting   | Relevance, Word Overlap          | Chạy lại benchmark (nếu vẫn dùng word overlap), đo điểm trung bình.      |
 
 ---
 
@@ -220,7 +220,8 @@ Với mỗi suggestion, nêu metric dự kiến thay đổi và cách đo lại.
 
 **Câu 3: Metric/failure nào phải block deployment, metric nào chỉ alert?**
 
-> *Câu trả lời:* 
+> *Câu trả lời:*
+>
 > - **Block deployment:** `passed` rate giảm đột biến, hoặc `Faithfulness` giảm mạnh (gây hallucination rủi ro pháp lý/tài chính).
 > - **Chỉ alert:** `Context Recall` hoặc `Completeness` giảm nhẹ.
 
@@ -240,11 +241,11 @@ Code/prompt/retrieval change → [Unit Tests (Static)] → [Regression Benchmark
 Evaluate → Analyze → Improve → Augment benchmark → Repeat
 ```
 
-| Priority | Action | Metric dự kiến cải thiện | Expected impact |
-|---:|---|---|---|
-| 1 | Nâng cấp Evaluator sang LLM-as-a-judge | Faithfulness, Relevance | Đánh giá phản ánh đúng chất lượng hệ thống, pass rate tăng lên > 90%. |
-| 2 | Prompt Engineering (Dặn LLM không tự diễn đạt lại thuật ngữ) | Word-overlap scores | Pass rate hệ thống (nếu vẫn xài word overlap) sẽ tăng nhẹ, giảm "irrelevant". |
-| 3 | Tách module Intent Classification riêng | Tỷ lệ failure "off_topic" | Loại bỏ các câu off_topic ngay từ đầu, giảm tải cho RAG pipeline. |
+| Priority | Action                                                                | Metric dự kiến cải thiện | Expected impact                                                                        |
+| -------: | --------------------------------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+|        1 | Nâng cấp Evaluator sang LLM-as-a-judge                              | Faithfulness, Relevance      | Đánh giá phản ánh đúng chất lượng hệ thống, pass rate tăng lên > 90%.    |
+|        2 | Prompt Engineering (Dặn LLM không tự diễn đạt lại thuật ngữ) | Word-overlap scores          | Pass rate hệ thống (nếu vẫn xài word overlap) sẽ tăng nhẹ, giảm "irrelevant". |
+|        3 | Tách module Intent Classification riêng                             | Tỷ lệ failure "off_topic"  | Loại bỏ các câu off_topic ngay từ đầu, giảm tải cho RAG pipeline.             |
 
 **Hai hoặc ba failure cases nào cần thêm vào benchmark ở vòng tiếp theo?**
 
@@ -256,9 +257,9 @@ Evaluate → Analyze → Improve → Augment benchmark → Repeat
 
 **Điều gì trong kết quả benchmark trái với dự đoán ban đầu của bạn?**
 
-> *Câu trả lời:* Dự đoán ban đầu thường cho rằng RAG bị lỗi do Retrieval (không lấy được document). Tuy nhiên, kết quả benchmark cho thấy Context Recall và Precision gần như hoàn hảo (0.85 - 0.94), nhưng hệ thống vẫn fail rất nhiều. Vấn đề lớn nhất lại nằm ở chính *phương pháp đo lường* chất lượng thế hệ (Generation) quá ngây ngô.
+> *Câu trả lời:* 
 
 **Word-overlap heuristics trong lab có giới hạn gì? Nếu đưa hệ thống vào
 production, bạn sẽ thay hoặc bổ sung metric nào?**
 
-> *Câu trả lời:* Word-overlap không hiểu được ngữ nghĩa (semantics), từ đồng nghĩa (synonyms), hoặc cách diễn đạt lại (paraphrase). Nó trừng phạt LLM khi LLM trả lời tự nhiên, dẫn đến false negatives rất lớn. Trong production, tôi sẽ thay thế bằng framework RAGAS sử dụng LLM-as-a-judge với các metrics như `Faithfulness`, `AnswerRelevancy`, và `ContextRecall` để đánh giá semantic thay vì syntactic matching.
+> *Câu trả lời:*

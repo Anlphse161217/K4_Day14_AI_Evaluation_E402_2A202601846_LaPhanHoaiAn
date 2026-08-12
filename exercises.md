@@ -274,13 +274,13 @@ Chọn 3–5 dimensions:
 Chỉ làm sau khi hoàn thành 3.1–3.3. Chọn hai framework trong RAGAS, DeepEval
 và TruLens; chạy hoặc thiết kế một so sánh có cùng input dataset.
 
-| Tiêu chí | Framework 1: RAGAS | Framework 2: DeepEval |
-|---|---|---|
-| Setup complexity | Dễ dàng. Ít dependencies, API đơn giản, dựa nhiều vào Prompt. | Phức tạp hơn. Yêu cầu setup Pydantic models cứng nhắc, nhưng có sẵn Pytest integration. |
-| Metrics available | Faithfulness, Answer Relevancy, Context Recall/Precision. Tối ưu cho RAG. | Rất nhiều (GEval, Hallucination, Bias, Toxicity). Rộng hơn RAG. |
-| CI/CD integration | Có thể tích hợp qua code tự viết. Không có sẵn CLI mạnh mẽ. | Tích hợp hoàn hảo với Pytest CLI, dễ dàng đưa vào GitHub Actions. |
-| Kết quả trên cùng dataset | Pass rate thường thấp do prompt chấm điểm khá khắt khe. | Pass rate có thể tùy chỉnh dễ dàng qua G-Eval criteria. |
-| Insight rút ra | RAGAS tốt để tối ưu RAG pipeline nội bộ. | DeepEval tốt để làm regression testing tự động (CI/CD) nhờ pytest integration. |
+| Tiêu chí                    | Framework 1: RAGAS                                                          | Framework 2: DeepEval                                                                             |
+| ----------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Setup complexity              | Dễ dàng. Ít dependencies, API đơn giản, dựa nhiều vào Prompt.      | Phức tạp hơn. Yêu cầu setup Pydantic models cứng nhắc, nhưng có sẵn Pytest integration. |
+| Metrics available             | Faithfulness, Answer Relevancy, Context Recall/Precision. Tối ưu cho RAG. | Rất nhiều (GEval, Hallucination, Bias, Toxicity). Rộng hơn RAG.                               |
+| CI/CD integration             | Có thể tích hợp qua code tự viết. Không có sẵn CLI mạnh mẽ.      | Tích hợp hoàn hảo với Pytest CLI, dễ dàng đưa vào GitHub Actions.                       |
+| Kết quả trên cùng dataset | Pass rate thường thấp do prompt chấm điểm khá khắt khe.             | Pass rate có thể tùy chỉnh dễ dàng qua G-Eval criteria.                                     |
+| Insight rút ra               | RAGAS tốt để tối ưu RAG pipeline nội bộ.                             | DeepEval tốt để làm regression testing tự động (CI/CD) nhờ pytest integration.            |
 
 - Scores có nhất quán không? Nhìn chung nhất quán về mặt xếp hạng (câu nào tệ thì cả hai đều chấm thấp), nhưng scale điểm có thể lệch.
 - Framework nào strict hơn và vì sao? RAGAS thường strict hơn ở phần Faithfulness vì prompt mặc định yêu cầu từng phát biểu phải được suy ra (entailed) trực tiếp từ context.
@@ -314,7 +314,7 @@ thay đổi Context Recall hay không.
 
 **Khi nào reranking không đủ và cần sửa retriever/query/chunking?**
 
-> *Câu trả lời:* Reranking vô dụng khi Recall thấp (nghĩa là các chunk được lấy lên ngay từ đầu đã không chứa câu trả lời). Khi đó, dù có sắp xếp lại kiểu gì thì vẫn không có thông tin. Lúc này, ta bắt buộc phải sửa Retriever (tăng `top_k`), sửa Query (Rewrite query), hoặc sửa Chunking strategy (chia chunk lớn hơn hoặc dùng semantic chunking) để đảm bảo bốc được thông tin đúng lên trước.
+> *Câu trả lời:* Reranking vô nghĩa khi Recall thấp nên sửa Query hoặc sửa Chunking strategy để đảm bảo bốc được thông tin đúng hiển thị đầu tiên
 
 ---
 
