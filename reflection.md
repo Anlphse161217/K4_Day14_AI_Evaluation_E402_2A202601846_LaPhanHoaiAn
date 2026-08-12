@@ -257,9 +257,9 @@ Evaluate → Analyze → Improve → Augment benchmark → Repeat
 
 **Điều gì trong kết quả benchmark trái với dự đoán ban đầu của bạn?**
 
-> *Câu trả lời:* 
+> *Câu trả lời:* Dự đoán ban đầu thường cho rằng RAG bị lỗi do Retrieval (không lấy được document). Tuy nhiên, kết quả benchmark cho thấy Context Recall và Precision gần như hoàn hảo (0.85 - 0.94), nhưng hệ thống vẫn fail rất nhiều. Vấn đề lớn nhất lại nằm ở chính *phương pháp đo lường* chất lượng thế hệ (Generation) quá ngây ngô.
 
 **Word-overlap heuristics trong lab có giới hạn gì? Nếu đưa hệ thống vào
 production, bạn sẽ thay hoặc bổ sung metric nào?**
 
-> *Câu trả lời:*
+> *Câu trả lời:* Word-overlap không hiểu được ngữ nghĩa (semantics), từ đồng nghĩa (synonyms), hoặc cách diễn đạt lại (paraphrase). Nó trừng phạt LLM khi LLM trả lời tự nhiên, dẫn đến false negatives rất lớn. Trong production, tôi sẽ thay thế bằng framework RAGAS sử dụng LLM-as-a-judge với các metrics như `Faithfulness`, `AnswerRelevancy`, và `ContextRecall` để đánh giá semantic thay vì syntactic matching.

@@ -314,7 +314,7 @@ thay đổi Context Recall hay không.
 
 **Khi nào reranking không đủ và cần sửa retriever/query/chunking?**
 
-> *Câu trả lời:* Reranking vô nghĩa khi Recall thấp nên sửa Query hoặc sửa Chunking strategy để đảm bảo bốc được thông tin đúng hiển thị đầu tiên
+> *Câu trả lời:* Reranking vô dụng khi Recall thấp (nghĩa là các chunk được lấy lên ngay từ đầu đã không chứa câu trả lời). Khi đó, dù có sắp xếp lại kiểu gì thì vẫn không có thông tin. Lúc này, ta bắt buộc phải sửa Retriever (tăng `top_k`), sửa Query (Rewrite query), hoặc sửa Chunking strategy (chia chunk lớn hơn hoặc dùng semantic chunking) để đảm bảo bốc được thông tin đúng lên trước.
 
 ---
 
